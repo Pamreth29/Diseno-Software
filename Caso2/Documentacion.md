@@ -13,14 +13,14 @@
 - Creamos el usuario perteneciente a un grupo: Create User > Create User in Group
 - Le asignamos una contraseña a los usuarios: Credential Operations > Set Password
 #### Usuarios: (nombre - contraseña)
-- Yareth Morataya - minchurila2908
-- Amy Morataya - lucas2908
-- Patricia Sandoval - cuco2908
-- Ricardo Morataya - minchu2908
+- Yareth Morataya - minchurila2908 - 00uj2ee4n5KKQisu85d7
+- Amy Morataya - lucas2908 - 00uj2eg86cu9Xwo3C5d7
+- Patricia Sandoval - cuco2908 - 00uj2egy7sz91MhtX5d7
+- Ricardo Morataya - minchu2908 - 00uj2ehbmwk44eqHY5d7
 #### Grupos y Usuarios:
-- Marketing: Yareth Morataya
-- Sales: Amy Morataya y Patricia Sandoval
-- C-Level: Ricardo Morataya
+- Marketing (00gj2ed5ljBn3L7fJ5d7): Yareth Morataya
+- Sales (00gj2eexhlHGQobyO5d7): Amy Morataya y Patricia Sandoval
+- C-Level (00gj2ef7gdNLU1EWs5d7): Ricardo Morataya
 
 ### 4. Habilitar MFA
 - Documentación: https://developer.okta.com/docs/guides/mfa/ga/main/
@@ -41,7 +41,7 @@
 - Nos dirigimos al FGA Dashboard y realizamos el Started Guide, diseñamos el modelo y creamos las reglas de tuplas
 
 Modelo creado: 
-#### Authorization Model (ID: 01J5KMJWMA7HS4A4V52SHTF0SK)
+#### Authorization Model (ID: 01J5R9SZZS1AGTHRGT09P73WGT)
 
 ```plaintext
 model
@@ -49,60 +49,83 @@ model
 
 type user
   relations
-    # Define which groups the user belongs to
-    define member_of: [group]
-    # Define various permissions the user can have
-    define has_permission: [payment_method_permission, contact_info_permission, sales_columns_permission, sales_target_progress_permission]
+    define member_of: [Sales, Marketing, C-Level]
 
-type group
+type Sales
   relations
-    # Define members of each group
     define members: [user]
-    define Sales: members
-    define Marketing: members
-    define C-Level: members
+
+type Marketing
+  relations
+    define members: [user]
+
+type C-Level
+  relations
+    define members: [user]
 
 type organization
   relations
-    # Define the groups within the organization
-    define salesGroup: [group]
-    # Define who can create files (if relevant) and other related permissions
-    define can_create_file: [user]
-    define owner: [user]
-    define viewer: [user, group#members] or owner
+    define can_access_CRM: [Sales#members, Marketing#members, C-Level#members]
+    define can_access_Payment: [Sales#members]
+
+type permission
+  relations
+    define can_display_card: [C-Level#members]
+    define can_modify_info: [Marketing#members, C-Level#members]
+    define can_see_columns: [user#member_of, C-Level#members]
 
 type payment_method
   relations
-    # Define which users have access to this payment method
-    define has_method: [user]
+    define creditDebit_Card_method: [user]
+    define paypal_method: [user]
+```
+- Creación de Tuplas:
 
-type payment_method_permission
-  relations
-    # Define which users can use which payment methods
-    define can_use_payment_method: [user, payment_method]
+Relación Usuario-Grupo:
+![RelacionUserGroup](./img/relacionUserGrupo.png)
 
-type CreditCard
-  relations
-    # Define which users can use this credit card
-    define has_method: [user]
+!!ACTUALIZAR ESTO!
+![pruebaRicardoMiembroCLevel](./img/pruebaRicardoMiembroCLevel.png)
 
-type PayPal
-  relations
-    # Define which users can use PayPal
-    define has_method: [user]
+Relación (Marketing, Sales, C-Level)-CRM y Sales-Payment:
+![RelacionCRM_Payment](./img/crm_payment.png)
 
-type contact_info_permission
-  relations
-    # Define which users can modify contact information
-    define can_modify_contact_info: [user]
+-----------------------------------------------
+Permiso #1: A permission or permissions that determine which payment methods the user is entitled to use. The two Sales users should be configured with different payment methods.
 
-type sales_columns_permission
-  relations
-    # Define which users can view sales columns
-    define can_view_sales_columns: [user]
+![TuplaPermiso#1](./img/permiso1.png)
+![Permiso#1: query1](./img/permiso1_Q1.png)
+![Permiso#1: query2](./img/permiso1_Q2.png)
 
-type sales_target_progress_permission
-  relations
-    # Define which users can view the sales target progress card
-    define can_view_sales_target_progress_card: [user]
+-----------------------------------------------
+Permiso #2: Permission to determine whether the user can access and modify the contact info. A Sales user will not have this permission.
+![TuplaPermiso#2](./img/permiso2.png)
+![Permiso#2: query1](./img/permiso2_Q1.png)
+![Permiso#2: query2](./img/permiso2_Q2.png)
 
+-----------------------------------------------
+Permiso #3: Permission to determine whether the user can see the two sales columns: Sales Goals and Sales Amount. Users in C-Level can see it, other groups cannot, but one specific Marketing user will have the right to see it. This permission is granted directly to the user, not to the group.
+
+![TuplaPermiso#3](./img/permiso3.png)
+
+-----------------------------------------------
+Permiso #4: Permission to display the "Sales Target Progress" card. Only members of C-Level can see it.
+
+![TuplaPermiso#4](./img/permiso4.png)
+
+-----------------------------------------------
+ **Pruebas:**
+- Prueba #1: a group has a certain permission in a specific application
+![prueba#1](./img/prueba1.png)
+![prueba#11](./img/prueba11.png)
+
+- Prueba #2: a user has access permission in a particular application
+![prueba#2](./img/prueba2.png)
+![prueba#22](./img/prueba22.png)
+![prueba#222](./img/prueba222.png)
+
+- Prueba #3: a user has a certain permission in an application inherited from belonging to a specific group
+![prueba#3](./img/prueba3.png)
+![prueba#33](./img/prueba33.png)
+![prueba#4](./img/prueba4.png)
+![prueba#44](./img/prueba44.png)
