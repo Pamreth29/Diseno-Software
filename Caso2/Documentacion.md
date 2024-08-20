@@ -41,7 +41,7 @@
 - Nos dirigimos al FGA Dashboard y realizamos el Started Guide, diseñamos el modelo y creamos las reglas de tuplas
 
 Modelo creado: 
-#### Authorization Model (ID: 01J5R9SZZS1AGTHRGT09P73WGT)
+#### Authorization Model (ID: 01J5REZSVGPA78EMSYW9MCV2MS)
 
 ```plaintext
 model
@@ -72,7 +72,7 @@ type permission
   relations
     define can_display_card: [C-Level#members]
     define can_modify_info: [Marketing#members, C-Level#members]
-    define can_see_columns: [user#member_of, C-Level#members]
+    define can_see_columns: [user, C-Level#members]
 
 type payment_method
   relations
