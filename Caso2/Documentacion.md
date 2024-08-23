@@ -41,72 +41,56 @@
 - Nos dirigimos al FGA Dashboard y realizamos el Started Guide, diseñamos el modelo y creamos las reglas de tuplas
 
 ## Modelo creado: 
-#### Authorization Model (ID: 01J5S55A314AN4SDK50XZ6A3W1)
+#### Authorization Model (ID: 01J5TVSM01NS00PZD0FMSGYWEH)
 
 ```plaintext
 model
   schema 1.1
 
 type user
-  relations
-    define member_of: [Sales, Marketing, C-Level]
 
-type Sales
+type group
   relations
-    define members: [user]
+    define member: [user]
 
-type Marketing
+type apps
   relations
-    define members: [user]
-
-type C-Level
-  relations
-    define members: [user]
-
-type organization
-  relations
-    define can_access_CRM: [user, Sales#members, Marketing#members, C-Level#members]
-    define can_access_Payment: [user, Sales#members]
+    define can_access_CRM: [user, group#member]
+    define can_access_Payment: [user, group#member]
 
 type permission
   relations
-    define can_display_card: [user, C-Level#members]
-    define can_modify_info: [user, Marketing#members, C-Level#members]
-    define can_see_columns: [user, C-Level#members]
+    define can_display_card: [user, group#member]
+    define can_modify_info: [user, group#member]
+    define can_see_columns: [user, group#member]
 
 type payment_method
   relations
     define creditDebit_Card_method: [user]
     define paypal_method: [user]
 ```
-## Creación de Tuplas:
-
-- Relación Usuario-Grupo:
-
-![RelacionUserGroup](./img/relacionUserGrupo.png)
-
-
-- Relación (Marketing, Sales, C-Level)-CRM y Sales-Payment:
-![RelacionCRM_Payment](./img/crm_payment.png)
-
 -----------------------------------------------
 ### Permiso #1: A permission or permissions that determine which payment methods the user is entitled to use. The two Sales users should be configured with different payment methods.
 
-![TuplaPermiso#1](./img/permiso1.png)
-
+- Funciona: is user:Amy related to payment_method:Tarjeta as creditDebit_Card_method?
+- No Funciona: is user:Amy related to payment_method:PayPal as paypal_method?
 -----------------------------------------------
 ### Permiso #2: Permission to determine whether the user can access and modify the contact info. A Sales user will not have this permission.
-![TuplaPermiso#2](./img/permiso2.png)
+
+- Funciona: is user:Yareth related to permission:AccessModifyInfo as can_modify_info?
+- No Funciona: is user:Amy related to permission:AccessModifyInfo as can_modify_info?
 
 -----------------------------------------------
 ### Permiso #3: Permission to determine whether the user can see the two sales columns: Sales Goals and Sales Amount. Users in C-Level can see it, other groups cannot, but one specific Marketing user will have the right to see it. This permission is granted directly to the user, not to the group.
 
-![TuplaPermiso#3](./img/permiso3.png)
+- Funciona: is user:Ricardo related to permission:SeeColumns as can_see_columns?
+- No Funciona: is user:Patricia related to permission:SeeColumns as can_see_columns?
 
 -----------------------------------------------
 ### Permiso #4: Permission to display the "Sales Target Progress" card. Only members of C-Level can see it.
 
-![TuplaPermiso#4](./img/permiso4.png)
+- Funciona: is group:C-Level#member related to permission:DisplayCard as can_display_card?
+- No Funciona: is group:Sales#member related to permission:DisplayCard as can_display_card?
 
 -----------------------------------------------
 # **Pruebas:**
@@ -114,17 +98,17 @@ type payment_method
 ## Prueba #1: a group has a certain permission in a specific application
 
 ### Okta FGA
-- Funciona: is Marketing:Marketing#members related to organization:01 as can_access_CRM?
-- No Funciona: is Marketing:Marketing#members related to organization:02 as can_access_Payment?
+- Funciona: is group:Marketing#member related to apps:Acceso_CRM as can_access_CRM?
+- No Funciona: is group:Marketing#member related to apps:Acceso_Payment as can_access_Payment?
 
 ### PostMan
 - Funciona:
 ```
 {
   "tuple_key": {
-    "user": "Marketing:Marketing#members",
+    "user": "group:Marketing#member",
     "relation": "can_access_CRM",
-    "object": "organization:01"
+    "object": "apps:Acceso_CRM"
   }
 }
 ```
@@ -133,29 +117,27 @@ type payment_method
 ```
 {
   "tuple_key": {
-    "user": "Marketing:Marketing#members",
+    "user": "group:Marketing#member",
     "relation": "can_access_Payment",
-    "object": "organization:02"
+    "object": "apps:Acceso_Payment"
   }
 }
 ```
-![prueba#1](./img/prueba1.png)
-![prueba#11](./img/prueba11.png)
 
 ## Prueba #2: a user has access permission in a particular application
 
 ### Okta FGA
-- Funciona: is user:00uj2ee4n5KKQisu85d7 related to organization:01 as can_access_CRM?
-- No Funciona: is user:00uj2ee4n5KKQisu85d7 related to organization:02 as can_access_Payment?
+- Funciona: is user:Yareth related to apps:Acceso_CRM as can_access_CRM?
+- No Funciona: is user:Yareth related to apps:Acceso_Payment as can_access_Payment?
 
 ### PostMan
 - Funciona:
 ```
 {
   "tuple_key": {
-    "user": "user:00uj2ee4n5KKQisu85d7",
+    "user": "user:Yareth",
     "relation": "can_access_CRM",
-    "object": "organization:01"
+    "object": "apps:Acceso_CRM"
   }
 }
 ```
@@ -164,30 +146,27 @@ type payment_method
 ```
 {
   "tuple_key": {
-    "user": "user:00uj2ee4n5KKQisu85d7",
+    "user": "user:Yareth",
     "relation": "can_access_Payment",
-    "object": "organization:02"
+    "object": "apps:Acceso_Payment"
   }
 }
 ```
-![prueba#2](./img/prueba2.png)
-![prueba#22](./img/prueba22.png)
-![prueba#222](./img/prueba222.png)
 
 ## Prueba #3: a user has a certain permission in an application inherited from belonging to a specific group
 
 ### Okta FGA
-- Funciona: is user:00uj2ee4n5KKQisu85d7 related to permission:02 as can_modify_info?
-- No Funciona: is user:00uj2ee4n5KKQisu85d7 related to permission:04 as can_display_card?
+- Funciona: is user:Ricardo related to permission:SeeColumns as can_see_columns?
+- No Funciona: is user:Yareth related to permission:DisplayCard as can_display_card?
 
 ### PostMan
 - Funciona:
 ```
 {
   "tuple_key": {
-    "user": "user:00uj2ee4n5KKQisu85d7",
-    "relation": "can_modify_info",
-    "object": "permission:02"
+    "user": "user:Ricardo",
+    "relation": "can_see_columns",
+    "object": "permission:SeeColumns"
   }
 }
 ```
@@ -196,22 +175,16 @@ type payment_method
 ```
 {
   "tuple_key": {
-    "user": "user:00uj2ee4n5KKQisu85d7",
+    "user": "user:Yareth",
     "relation": "can_display_card",
-    "object": "permission:04"
+    "object": "permission:DisplayCard"
   }
 }
 ```
 
-![prueba#3](./img/prueba3.png)
-![prueba#33](./img/prueba33.png)
-![prueba#4](./img/prueba4.png)
-![prueba#44](./img/prueba44.png)
-
-
 ### Creación del Cliente
 - Store ID: 01J5KFQQ70BQFF3F0K6E2X3F5W
-- Model ID: 01J5REZSVGPA78EMSYW9MCV2MS
+- Model ID: 01J5TVSM01NS00PZD0FMSGYWEH
 - Client Name: Pamela Morataya
 - Client ID: 29JvIsSiBHmsJWYgJtO0CxWXllerXRqj
 - Client Secret: 44f5Wp7PaYbSajo_u-cfR2KfeeGDH-wE8qzZp83xnEkmfcm0eGWq8Frqvsiynypj
