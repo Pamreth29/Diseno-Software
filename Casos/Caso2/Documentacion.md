@@ -217,6 +217,16 @@ Para solucionar el posible error a la hora de buguear el sistema cuando se selec
 
 ## Tendencias
 Al analizar los resultados de las encuestas, observamos una tendencia clara en el comportamiento de los usuarios: tienden a hacer clic en todo lo que encuentran. En los heatmaps, se puede ver cómo los usuarios interactuaban con cada botón en la plantilla, como la "x" para eliminar un elemento del carrito de compras o el botón de envío para un texto tipo prompt. Además, se nota que los usuarios suelen explorar minuciosamente toda la "sala" incluida como ejemplo, tratando de encontrar todos los elementos cliqueables posibles.
+### Ejemplos mencionados:
+<div style="text-align: center; margin-bottom: 40px;">
+    <p style="font-size: 18px;">Se puede observar cómo los usuarios exploran los objetos que se tienen en la sala para verificar si existe alguna interacción posible.</p>
+    <img src="./Resultados Usabilidad/Prueba4/HeatmapsPrueba4/image1.png" alt="Diseñar Inicio" style="width: 50%;"/>
+</div>
+
+<div style="text-align: center; margin-bottom: 40px;">
+    <p style="font-size: 18px;">Se muestra cómo los usuarios tienden a cliquear sobre las "x" para eliminar objetos del carrito.</p>
+    <img src="./Resultados Usabilidad/Prueba3/HeatmapsPrueba3/image2.png" alt="Eliminar del Carrito" style="width: 50%;"/>
+</div>
 
 ## Correcciones para mejorar el UI
 Para mejorar el UI se tienen varias mejoras basadas en las pruebas:
