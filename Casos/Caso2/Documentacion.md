@@ -186,10 +186,43 @@ Heatmaps de los wireframes de la tarea.
 
 ## Errores
 
+### Error al eliminar las lámparas del carrito
+A la hora que los usuarios van hacia la opción de eliminar imagen del carrito, muchos de ellos suelen darle click al botón X rojo al lado de la compra en el carrito, en el diseño como tal no fue aplicado.
+
+De tal modo que se considera un error tanto visual como funcional, pues éste botón no cumple la función de eliminar del carrito y confunde al usuario.
+
+<div>
+    <img src="./Resultados Usabilidad/Prueba3/HeatmapsPrueba3/image2.png" style="width: 100%;"/>
+</div>
+
+A tomar en consideración para arreglar el error, tenemos 2 opciones, pero para facilitar al usuario, lo mejor sería permitir que el botón con forma de X si permita a los usuarios quitar el elemento de la lámpara, y quitar dicha opción del popup mejor.
+
+### Error con las luces al apagarlas y encenderlas
+A la hora que el usuario desee encender la luz como tal, o apagarla, la luz simplemente se enciende como tal o se mantiene apagada siempre; lo cual se puede considerar un posible error.
+
+<div>
+    <img src="./Resultados Usabilidad/Prueba4/HeatmapsPrueba4/image2.png" style="width: 100%;"/>
+</div>
+
+El punto más normal para solucionarlo sería tener en el sistema algo para que cuando esté encendido y el usuario le de click, se apague de forma correcta, y active el punto original, como un "flag".
+
+### Error a la seleccionar la imagen
+A la hora de seleccionar imagen para determinar la imagen para diseñar como tal, el usuario piensa que puede dar click a la imagen, pues le da click fuera del botón también... sin embargo, también pueden surgir problemas a la hora de seleccionar.
+
+<div>
+    <img src="./Resultados Usabilidad/Prueba1/HeatmapsPrueba1/Heatmap1.png" style="width: 100%;"/>
+</div>
+
+Para solucionar el posible error a la hora de buguear el sistema cuando se selecciona la imagen, es posible usar un "flag" como tal para determinar cuando la foto esté seleccionada.
+
 ## Tendencias
 
 ## Comportamientos
 
 ## Correcciones para mejorar el UI
-
+Para mejorar el UI se tienen varias mejoras basadas en las pruebas:
+- Agregar un set de instrucciones sobre cómo interactuar con las lámparas para así poder apagar y prender las distintas luces.
+- Cuando el usuario quiera agregar una imagen se puede bloquear la pantalla para que el usuario no se pierda a la hora de realizar esta interacción.
+- Habilitar el chat del IA con las recomendaciones hasta que el usuario entre en su etapa de diseño, ya que en las pruebas, el usuario clickeaba estos botones antes de estar funcionales.
+- Aumentar el tamaño del cuadro de la imágen para que se pueda tener una mejor observación e interacción con los componentes.
 
