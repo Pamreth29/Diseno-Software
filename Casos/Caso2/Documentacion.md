@@ -2,11 +2,11 @@
 ## Light Soul
 
 ### Integrantes:
-- Manuel Calero
-- Eduardo Jimenez
-- Pamela Morataya Sandoval
-- Harlen Quirós
-- Carlos Venegas
+- Manuel Calero Ríos - 2022082503
+- Angel Eduardo Jimenez Valverde - 2021436942
+- Pamela Morataya Sandoval - 2022108818
+- Harlen Quirós Gómez - 2022035693
+- Carlos Venegas Masis - 2022153870
 
 ### Herramientas utilizadas
 - Diseño: Figma
@@ -82,7 +82,7 @@ Esta prueba consiste en varias tareas:
 - Colocar la edad del participante.
 Esta prueba se realiza para poder determinar el público y el rango de su edad, con el fin de ver si esto afecta.
 
-- Cargar una imágen de entorno para probar distintas lámparas.
+- Cargar una imagen de entorno para probar distintas lámparas.
 Esta prueba es importante ya que es necesario comprobar que el usuario pueda subir una imágen y así probar las lámparas en su ambiente deseado.
 
 - Agregar al carrito las 3 lámparas de la imágen.
@@ -216,8 +216,7 @@ A la hora de seleccionar imagen para determinar la imagen para diseñar como tal
 Para solucionar el posible error a la hora de buguear el sistema cuando se selecciona la imagen, es posible usar un "flag" como tal para determinar cuando la foto esté seleccionada.
 
 ## Tendencias
-
-## Comportamientos
+Al analizar los resultados de las encuestas, observamos una tendencia clara en el comportamiento de los usuarios: tienden a hacer clic en todo lo que encuentran. En los heatmaps, se puede ver cómo los usuarios interactuaban con cada botón en la plantilla, como la "x" para eliminar un elemento del carrito de compras o el botón de envío para un texto tipo prompt. Además, se nota que los usuarios suelen explorar minuciosamente toda la "sala" incluida como ejemplo, tratando de encontrar todos los elementos cliqueables posibles.
 
 ## Correcciones para mejorar el UI
 Para mejorar el UI se tienen varias mejoras basadas en las pruebas:
